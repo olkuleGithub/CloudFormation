@@ -1,0 +1,84 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: "This template provisions our dev network environment"
+
+Metadata: {}
+
+Parameters:
+  VpcCidrBlock:
+    Description: CIDR block for DevVPC
+    Type: String
+    Default: 10.0.0.0/16  
+
+  WebSubnetCidrBlock:
+    Description: CIDR block for the Web server subnet
+    Type: String
+    Default: 10.0.1.0/24
+    
+
+  AppSubnetCidrBlock:
+    Description: CIDR block for the App server subnet
+    Type: String
+    Default: 10.0.2.0/24
+    
+
+  DebSubnetCidrBlock:
+    Description: CIDR block for the Deb server subnet
+    Type: String
+    Default: 10.0.3.0/24
+    
+
+  AvailabilityZone:
+    Description: Availability Zone for subnets
+    Type: String
+    Default: us-east-1a
+      
+
+Mappings: {}
+
+Conditions: {}
+
+Resources:
+  # Development VPC
+  DevVPC:
+    Type: AWS::EC2::VPC
+    Properties:
+      CidrBlock: !Ref VpcCidrBlock
+      EnableDnsSupport: true
+      Tags:
+        - Key: Name
+          Value: DevVPC
+
+  # Webserver subnet
+  DevWebserverSubnet:
+    Type: AWS::EC2::Subnet
+    Properties:
+      AvailabilityZone: !Ref AvailabilityZone
+      VpcId: !Ref DevVPC
+      CidrBlock: !Ref WebSubnetCidrBlock
+      Tags:
+        - Key: Name
+          Value: DevWebserverSubnet
+
+  # Appserver subnet
+  DevAppserverSubnet:
+    Type: AWS::EC2::Subnet
+    Properties:
+      AvailabilityZone: !Ref AvailabilityZone
+      VpcId: !Ref DevVPC
+      CidrBlock: !Ref AppSubnetCidrBlock
+      Tags:
+        - Key: Name
+          Value: DevAppserverSubnet
+
+  # Debserver subnet
+  DebserverSubnet:
+    Type: AWS::EC2::Subnet
+    Properties:
+      AvailabilityZone: !Ref AvailabilityZone
+      VpcId: !Ref DevVPC
+      CidrBlock: !Ref DebSubnetCidrBlock
+      Tags:
+        - Key: Name
+          Value: DebserverSubnet
+
+Outputs: {}
